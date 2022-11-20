@@ -31,6 +31,7 @@ function setBackground(){
 function setBoard() {
     //curCol = [maxRowIndex, maxRowIndex, ..., ..., ..., ..., ...];
 
+    //test
     //Temporary array indicating empty spots left in each column.
     tempRow = [];
     for(let i = 0; i < cols; i++){
