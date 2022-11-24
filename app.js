@@ -1,24 +1,24 @@
 var playerOne = "Red";
 var playerTwo = "Yellow";
-
+//first player = red (playerOne)
 var activePlayer = playerOne;
+var gameOver = false;
+
+var board;
+var rows = 6;
+var cols = 7;
+
 var tempRow;
-var rows;
-var cols;
 var arrWinning;
 
-
-var gameOver = false;
-var board;
-
-function setRows(rows){
-    this.rows = rows;
+//Initial startup (calls on refresh to page)
+window.onload = function(){
+    setBackground();
+    setBoard();
 }
 
-function setCols(cols){
-    this.cols = cols;
-}
-
+//Layers with canvas with multiple backgrounds and the board resting on top. 
+//Eleminates issue of opacity changing entire board during win/loss conditions
 function setBackground(){
     let backGround = document.getElementById("board");
     backGround.classList.add("board");
@@ -28,10 +28,11 @@ function setBackground(){
     document.getElementById("boardBackground2").append(backGround);
 }
 
+//Sets the initial gamestate of the board (blank board with 42 white circles)
+//appends each white space to the board (overlapping)
 function setBoard() {
     //curCol = [maxRowIndex, maxRowIndex, ..., ..., ..., ..., ...];
 
-    //test
     //Temporary array indicating empty spots left in each column.
     tempRow = [];
     for(let i = 0; i < cols; i++){
@@ -107,20 +108,17 @@ function boardFull() {
 function checkWinner(){
     //undefined adjacent board values (out of bounds of 6x7 grid)
 
-    //console.log(boardFull());
     //checking diagonal (lower left to top right)
     for(let i = 3; i< rows; i++){
         for(let j = 0; j< cols; j++){
             if(board[i][j] != ' '){
                 if(board[i][j] == board[i-1][j+1] && board[i-1][j+1] == board[i-2][j+2] && board[i-2][j+2] == board[i-3][j+3]){
                     arrWinning = [(i + "" + j), ((i-1) + "" + (j+1)), ((i-2) + "" + (j+2)), ((i-3) + "" + (j+3))];
-                    console.log("win");
                     setWinner(i,j,arrWinning);
                     return;
                 }
             }
         }
-        console.log("Reached end1");
     }
 
     //checking diagonal (upper left to bottom right)
@@ -193,7 +191,6 @@ function setWinner(i,j,arr){
 }
 
 function setRemainingOpacity(arr){
-
     for(let i = 0; i < rows; i++){
         for(let j = 0; j < cols; j++){
             let location = i + "" + j;
@@ -211,12 +208,4 @@ function setRemainingOpacity(arr){
         }
     }
     return;
-}
-
-//Initial startup
-window.onload = function(){
-    setRows(6);
-    setCols(7);
-    setBackground();
-    setBoard();
 }
