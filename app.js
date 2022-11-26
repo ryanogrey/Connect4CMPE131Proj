@@ -154,37 +154,51 @@ function checkWinner(){
         }
     }
 
+    //checking for draw
     if(boardFull() == true){
-        gameOver = true;
-        for(let i = 0; i < rows; i++){
-            for(let j = 0; j < cols; j++){
-                let location = i + "" + j;
-                let occupiedSpace = document.getElementById(location);
-                occupiedSpace.classList.replace("redCircle","nonWinningRed");
-                occupiedSpace.classList.replace("yellowCircle","nonWinningYellow");     
-                
-            }
-        }
-        winner.innerText = "There was a Draw!";
+        arrWinning = [null];
+        setWinner(-100,-100, arrWinning);
     }
     
 }
 
 function setWinner(i,j,arr){
     let winner = document.getElementById("winner");
-    if(board[i][j] == playerOne) {
+
+    //if draw
+    if(i == -100) {
+        winner.innerText = "There was a Draw!";
+        setRemainingPieces(arr);
+    }
+    //if red wins
+    else if(board[i][j] == playerOne) {
         winner.innerText = "Red is the Winner!";
         winner.style.color = "red";
-        setRemainingOpacity(arr);
-    } else {
+        setRemainingPieces(arr);
+    } 
+    //if yellow wins
+    else {
         winner.innerText = "Yellow is the Winner!";
         winner.style.color = "yellow";
-        setRemainingOpacity(arr);
+        setRemainingPieces(arr);
     }
     gameOver = true;
 }
 
-function setRemainingOpacity(arr){
+function setRemainingPieces(arr){
+    //if draw, set entire board to non-winning
+    if (arr[0] == null) {
+        for(let i = 0; i < rows; i++){
+            for(let j = 0; j < cols; j++){
+                let occupiedSpace = document.getElementById(i + "" + j);
+                occupiedSpace.classList.replace("redCircle","nonWinningRed");
+                occupiedSpace.classList.replace("yellowCircle","nonWinningYellow");       
+            }
+        }
+        return;
+    }
+
+    //if non-draw, set winning and non-winning pieces to appropriate colors and opacities
     for(let i = 0; i < rows; i++){
         for(let j = 0; j < cols; j++){
             let location = i + "" + j;
