@@ -1,0 +1,29 @@
+.titles {
+    text-align: center;
+    padding:0;
+    height:4vh;
+    width: 25vw;
+    font-style: italic;
+    
+}
+
+#winner {
+    text-align: center;
+    padding: 0;
+    height:0vh;
+    width:25vw;
+}
+
+#container {
+    min-height: 98vh;
+    display: flex;
+}
+
+.left{
+    width:30vw;
+    background-color: white;
+}
+.right{
+    width:70vw;
+    background-color: white;
+}

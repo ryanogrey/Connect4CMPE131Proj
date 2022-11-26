@@ -13,19 +13,7 @@ var arrWinning;
 
 //Initial startup (calls on refresh to page)
 window.onload = function(){
-    setBackground();
     setBoard();
-}
-
-//Layers with canvas with multiple backgrounds and the board resting on top. 
-//Eleminates issue of opacity changing entire board during win/loss conditions
-function setBackground(){
-    let backGround = document.getElementById("board");
-    backGround.classList.add("board");
-    let backGround2 = document.getElementById("boardBackground2");
-    backGround2.classList.add("boardBackground2");
-    document.getElementById("boardBackground").append(backGround2);
-    document.getElementById("boardBackground2").append(backGround);
 }
 
 //Sets the initial gamestate of the board (blank board with 42 white circles)
@@ -46,12 +34,12 @@ function setBoard() {
         for (let j = 0; j < cols; j++){
             row[j] = ' ';
 
-            let bspace = document.getElementById("space"+ i + "" + j);
-
-            bspace.id = i.toString() + "" + j.toString();
+            let bspace = document.getElementById(i + "" + j);
             bspace.classList.add("bspace");
-            bspace.addEventListener("click",placeCircle)
             document.getElementById("board").append(bspace);
+
+            //adds functionality of clicking a space -> calling placeCircle function
+            bspace.addEventListener("click",placeCircle)
         }
         board[i] = row;
     }
