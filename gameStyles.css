@@ -1,6 +1,6 @@
 body {
     font-family:Georgia, 'Times New Roman', Times, serif;
-    position: relative; left: 0px; 
+    position: relative; left: 20px; 
 }
 
 #boardBackground {
@@ -33,12 +33,12 @@ body {
 
 }
 
-.bspace {
+.emptySpace {
+    background-color: white;
     height: 75px;
     width: 75px;
     margin:5px;
 
-    background-color: white;
     border: 4px solid black;
     border-radius: 80%;
 
@@ -49,8 +49,10 @@ body {
     height: 75px;
     width: 75px;
     margin:5px;
+
     border: 4px solid black;
     border-radius: 80%;
+
     animation: flicker 0.7s;
 }
 
@@ -59,8 +61,10 @@ body {
     height: 75px;
     width: 75px;
     margin:5px;
+
     border: 4px solid black;
     border-radius: 80%;
+
     animation: flicker 0.7s;
 }
 
@@ -69,7 +73,10 @@ body {
     height: 75px;
     width: 75px;
     margin:5px;
+
+    border-radius: 80%;
     border: 4px solid black;
+
     opacity: 0.5;
     
 }
@@ -79,7 +86,10 @@ body {
     height: 75px;
     width: 75px;
     margin:5px;
+
+    border-radius: 80%;
     border: 4px solid black;
+
     opacity: 0.5;
     
 }
@@ -89,7 +99,10 @@ body {
     height: 75px;
     width: 75px;
     margin:5px;
+
+    border-radius: 80%;
     border: 4px solid black;
+
     box-shadow:
         0 0 18px 8px rgb(243, 109, 109),
         0 0 40px 20px rgb(247, 29, 9),
@@ -105,7 +118,10 @@ body {
     height: 75px;
     width: 75px;
     margin:5px;
+
+    border-radius: 80%;
     border: 4px solid black;
+
     box-shadow:
         0 0 35px 10px rgb(246, 241, 107),
         0 0 50px 20px rgb(237, 197, 19),

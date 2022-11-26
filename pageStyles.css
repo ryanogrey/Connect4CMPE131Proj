@@ -1,27 +1,27 @@
 .titles {
-    text-align: center;
     padding:0;
     height:4vh;
-    width: 25vw;
+    width: auto;
     font-style: italic;
+    text-align: center;
     
 }
 
 #winner {
-    text-align: center;
     padding: 0;
     height:0vh;
-    width:25vw;
+    width:auto;
+    text-align: center;
 }
 
 #container {
-    min-height: 98vh;
+    min-height: 94vh;
     display: flex;
 }
 
 .left{
-    width:30vw;
-    background-color: white;
+    width:55vw;
+    background-color: gray;
 }
 .right{
     width:70vw;

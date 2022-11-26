@@ -34,8 +34,11 @@ function setBoard() {
         for (let j = 0; j < cols; j++){
             row[j] = ' ';
 
+            //points to one of the space divs 
             let bspace = document.getElementById(i + "" + j);
-            bspace.classList.add("bspace");
+            //adds the empty space style from gameStyles.css as a sub-class to bspace
+            bspace.classList.add("emptySpace");
+            //adds the empty space to the board
             document.getElementById("board").append(bspace);
 
             //adds functionality of clicking a space -> calling placeCircle function
@@ -67,11 +70,12 @@ function placeCircle(){
     board[rowCoord][colCoord] = activePlayer;
 
     if (activePlayer == "Red"){
-        document.getElementById(rowCoord + "" + colCoord).classList.add("redCircle");
+        //document.getElementById(rowCoord + "" + colCoord).classList.add("redCircle");
+        document.getElementById(rowCoord + "" + colCoord).classList.replace("emptySpace" , "redCircle");
         activePlayer = playerTwo;
     }
     else {
-        document.getElementById(rowCoord + "" + colCoord).classList.add("yellowCircle")
+        document.getElementById(rowCoord + "" + colCoord).classList.replace("emptySpace" , "yellowCircle");
         activePlayer = playerOne;
     }
 
@@ -170,9 +174,11 @@ function setWinner(i,j,arr){
     let winner = document.getElementById("winner");
     if(board[i][j] == playerOne) {
         winner.innerText = "Red is the Winner!";
+        winner.style.color = "red";
         setRemainingOpacity(arr);
     } else {
         winner.innerText = "Yellow is the Winner!";
+        winner.style.color = "yellow";
         setRemainingOpacity(arr);
     }
     gameOver = true;
