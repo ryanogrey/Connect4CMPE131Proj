@@ -19,6 +19,14 @@ window.onload = function(){
 //Sets the initial gamestate of the board (blank board with 42 white circles)
 //appends each white space to the board (overlapping)
 function setBoard() {
+
+    //sets hover pieces
+    for(let i = 0; i < cols; i++){ 
+        let bspace = document.getElementById(i);
+        bspace.classList.add("emptySpaceH");
+        document.getElementById("boardAnimation").append(bspace);
+    }
+
     //curCol = [maxRowIndex, maxRowIndex, ..., ..., ..., ..., ...];
 
     //Temporary array indicating empty spots left in each column.
@@ -42,7 +50,10 @@ function setBoard() {
             document.getElementById("board").append(bspace);
 
             //adds functionality of clicking a space -> calling placeCircle function
-            bspace.addEventListener("click",placeCircle)
+            bspace.addEventListener("click",placeCircle);
+            //adding functionality to graphical hovering methods
+            bspace.addEventListener("mouseover",pieceHover);
+            bspace.addEventListener("mouseout", pieceUnHover);
         }
         board[i] = row;
     }
@@ -73,10 +84,14 @@ function placeCircle(){
         //document.getElementById(rowCoord + "" + colCoord).classList.add("redCircle");
         document.getElementById(rowCoord + "" + colCoord).classList.replace("emptySpace" , "redCircle");
         activePlayer = playerTwo;
+        //changes pre-mouseover hover to new player color
+        document.getElementById(colCoord).classList.replace("hoverRed" , "hoverYellow");
     }
     else {
         document.getElementById(rowCoord + "" + colCoord).classList.replace("emptySpace" , "yellowCircle");
         activePlayer = playerOne;
+        //changes pre-mouseover hover to new player color
+        document.getElementById(colCoord).classList.replace("hoverYellow" , "hoverRed");
     }
 
     //Once a piece is placed, there is one less available spot 
@@ -216,4 +231,24 @@ function setRemainingPieces(arr){
         }
     }
     return;
+}
+
+function pieceHover() {
+    if (gameOver != true){
+        let coords = parseInt(this.id);
+        let colCoord = coords % 10;
+
+        if (activePlayer == "Red"){
+            document.getElementById(colCoord).classList.replace("emptySpaceH" , "hoverRed");
+        }
+        else {
+            document.getElementById(colCoord).classList.replace("emptySpaceH" , "hoverYellow");
+        }
+    }
+}
+function pieceUnHover(){
+    let coords = parseInt(this.id);
+    let colCoord = coords % 10;
+    document.getElementById(colCoord).classList.replace("hoverRed" , "emptySpaceH");
+    document.getElementById(colCoord).classList.replace("hoverYellow" , "emptySpaceH");
 }
