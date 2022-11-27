@@ -9,7 +9,7 @@
 
 #winner {
     padding: 0;
-    height:0vh;
+    height:5vh;
     width:auto;
     text-align: center;
 }
@@ -20,12 +20,27 @@
 }
 
 .left{
-    width:55vw;
+    width:50vw;
     background-color: gray;
 }
 .right{
     width:70vw;
     background-color: white;
+}
+.bottomLeft{
+    width:55vw;
+    height: 65vh;
+    background-color: blue;
+}
+
+.chatBox{
+    width:30vw;
+    height: 65vh;
+    background-color: white;
+    
+
+    display: flex;
+    flex-wrap: wrap;
 }
 
 #boardBackground {
