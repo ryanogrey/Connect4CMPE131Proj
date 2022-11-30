@@ -17,6 +17,10 @@ var arrWinning;
 
 var difficulty;
 
+var turn = 0;
+
+var avoid = null;
+
 
 
 //Initial startup (calls on refresh to page)
@@ -105,6 +109,7 @@ function placeCircle(){
     let stateTurn = document.getElementById("stateTurn");
 
     if (activePlayer == playerTwo) {
+        turn++;
         colCoord = determinePlay();
         rowCoord = tempRow[colCoord];
         if (rowCoord < 0){
@@ -334,6 +339,10 @@ function pieceUnHover(){
 
 function randomPlay(){
     let colCoord = Math.floor(Math.random() * 7);
+    //let i = 5 - tempRow[colCoord];
+    //let adj1;
+    //let adj2;
+    //let adj3;
     while(tempRow[colCoord] < 0){
         colCoord = Math.floor(Math.random() * 7);
     }
@@ -343,6 +352,162 @@ function randomPlay(){
 function intelligentPlay(){
 
     let temp = -1;
+
+    //checking lowest level horizontal
+    //if on lowest level, an empty space guarentees there is nothing below it, so don't have to check the piece below
+    for(let i = 0; i< rows; i++){
+        for (let j = 0; j< cols-3; j++){
+            let color1 = board[i][j];
+            let color2 = board[i][j+1];
+            let color3 = board[i][j+2];
+            let color4 = board[i][j+3];
+
+            if((color1 == color2) && (color2 == color3) && (color4 == ' ')){
+                if (i == 5){
+                    console.log("Horizontal lowest level noticed");
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        return j+3;
+                    }
+                    else{
+                        temp = j+3;
+                    }
+                }
+            }
+            else if((color1 == color2) && (color2 == color4) && (color3 == ' ')){
+                if (i == 5){
+                    console.log("Horizontal lowest level noticed");
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        return j+2;
+                    }
+                    else{
+                        temp = j+2;
+                    }
+                }
+            }
+            if((color1 == color3) && (color3 == color4) && (color2 == ' ')){
+                if (i - 1 == 4){
+                    console.log("Horizontal lowest level noticed");
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        return j+1;
+                    }
+                    else{
+                        temp = j+1;
+                    }
+                }
+            }
+            else if((color2 == color3) && (color3 == color4) && (color1 == ' ')){
+                if (i - 1 == 4){
+                    console.log("Horizontal lowest level noticed");
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        return j;
+                    }
+                    else{
+                        temp = j;
+                    }
+                }
+            }
+        }
+    }
+
+    //checking for any case horiztonal
+    for(let i = 0; i< rows -1; i++){
+        for (let j = 0; j< cols-3; j++){
+            let color1 = board[i][j];
+            let color2 = board[i][j+1];
+            let color3 = board[i][j+2];
+            let color4 = board[i][j+3];
+
+            if ((color1 == color2) && (color2 == color3) && (color4 == ' ') && (board[i+1][j+3] != ' ')){
+                if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                    return j+3;
+                }
+                else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                    temp = j+3;
+                }
+            }
+            else if ((color1 == color2) && (color2 == color4) && (color3 == ' ') && (board[i+1][j+2] != ' ')){
+                if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                    return j+2;
+                }
+                else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                    temp = j+2;
+                }
+            }
+            else if ((color1 == color3) && (color3 == color4) && (color2 == ' ') && (board[i+1][j+1] != ' ')){
+                if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                    return j+1;
+                }
+                else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                    temp = j+1;
+                }
+            }
+            else if ((color2 == color3) && (color3 == color4) && (color1 == ' ') && (board[i+1][j] != ' ')){
+                if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                    return j;
+                }
+                else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                    temp = j;
+                }
+            }
+            
+        }
+    }
+
+    //Avoid function horizontal
+    for(let i = 0; i< rows -1; i++){
+        for (let j = 0; j< cols-3; j++){
+            let color1 = board[i][j];
+            let color2 = board[i][j+1];
+            let color3 = board[i][j+2];
+            let color4 = board[i][j+3];
+            if (i < 4){
+                if ((color1 == color2) && (color2 == color3) && (color4 == ' ')  && (board[i+1][j+3] == ' ' && board[i+2][j+3] != ' ')){
+                    if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        setAvoid(j+3);
+                    }
+                }
+                else if ((color1 == color2) && (color2 == color4) && (color3 == ' ')  && (board[i+1][j+2] == ' ' && board[i+2][j+2] != ' ')){
+                    if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        setAvoid(j+2);
+                    }
+                }
+                else if ((color1 == color3) && (color3 == color4) && (color2 == ' ')  && (board[i+1][j+1] == ' '  && board[i+2][j+1] != ' ')){
+                    if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        setAvoid(j+1);
+                    }
+                }
+                else if ((color2 == color3) && (color3 == color4) && (color1 == ' ')  && (board[i+1][j] == ' '  && board[i+2][j] != ' ')){
+                    if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        setAvoid(j);
+                    }
+                }
+            }
+            else if(i == 4){
+                if ((color1 == color2) && (color2 == color3) && (color4 == ' ')  && (board[i+1][j+3] == ' ')){
+                    if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        setAvoid(j+3);
+                    }
+                }
+                else if ((color1 == color2) && (color2 == color4) && (color3 == ' ')  && (board[i+1][j+2] == ' ')){
+                    if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        setAvoid(j+2);
+                    }
+                }
+                else if ((color1 == color3) && (color3 == color4) && (color2 == ' ')  && (board[i+1][j+1] == ' ' )){
+                    if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        setAvoid(j+1);
+                    }
+                }
+                else if ((color2 == color3) && (color3 == color4) && (color1 == ' ')  && (board[i+1][j] == ' ' )){
+                    if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        setAvoid(j);
+                    }
+                }
+            }
+            
+            
+        }
+    }
 
     //Vertical
     for(let i = rows-1; i >= 3; i--){
@@ -362,109 +527,6 @@ function intelligentPlay(){
         }
     }
 
-    for(let i = 0; i< rows; i++){
-        for (let j = 0; j< cols-3; j++){
-            if(board[i][j] != ' '){
-                let color1 = board[i][j];
-                let color2 = board[i][j+1];
-                let color3 = board[i][j+2];
-                let color4 = board[i][j+3];
-
-                if((color1 == color2) && (color2 == color3) && (color4 == ' ')){
-                    if (i - 1 == 4){
-                        console.log("Horizontal lowest level noticed");
-                        if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
-                            return j+3;
-                        }
-                        else{
-                            temp = j+3;
-                        }
-                    }
-                }
-                else if((color1 == color2) && (color2 == color4) && (color3 == ' ')){
-                    if (i - 1 == 4){
-                        console.log("Horizontal lowest level noticed");
-                        if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
-                            return j+2;
-                        }
-                        else{
-                            temp = j+2;
-                        }
-                    }
-                }
-                if((color1 == color3) && (color3 == color4) && (color2 == ' ')){
-                    if (i - 1 == 4){
-                        console.log("Horizontal lowest level noticed");
-                        if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
-                            return j+1;
-                        }
-                        else{
-                            temp = j+1;
-                        }
-                    }
-                }
-                else if((color2 == color3) && (color3 == color4) && (color1 == ' ')){
-                    if (i - 1 == 4){
-                        console.log("Horizontal lowest level noticed");
-                        if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
-                            return j;
-                        }
-                        else{
-                            temp = j;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    for(let i = 0; i< rows -1; i++){
-        for (let j = 0; j< cols-3; j++){
-            if(board[i][j] != ' '){
-                let color1 = board[i][j];
-                let color2 = board[i][j+1];
-                let color3 = board[i][j+2];
-                let color4 = board[i][j+3];
-
-                if ((color1 == color2) && (color2 == color3) && (color4 == ' ') && (board[i+1][j+3] != ' ')){
-                    console.log("Horizontal else noticed");
-                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
-                        return j+3;
-                    }
-                    else{
-                        temp = j+3;
-                    }
-                }
-                else if ((color1 == color2) && (color2 == color4) && (color3 == ' ') && (board[i+1][j+2] != ' ')){
-                    console.log("Horizontal else noticed");
-                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
-                        return j+2;
-                    }
-                    else{
-                        temp = j+2;
-                    }
-                }
-                else if ((color1 == color3) && (color3 == color4) && (color2 == ' ') && (board[i+1][j+1] != ' ')){
-                    console.log("Horizontal else noticed");
-                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
-                        return j+1;
-                    }
-                    else{
-                        temp = j+1;
-                    }
-                }
-                else if ((color2 == color3) && (color3 == color4) && (color1 == ' ') && (board[i+1][j] != ' ')){
-                    console.log("Horizontal else noticed");
-                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
-                        return j;
-                    }
-                    else{
-                        temp = j;
-                    }
-                }
-            }
-        }
-    }
     /*//checking diagonal (lower left to top right)
     for(let i = rows - 1; i>= 3; i--){
         for (let j = 0; j< cols; j++){
@@ -481,8 +543,23 @@ function intelligentPlay(){
             }
         }
     }*/
-    
+
     return temp;
+}
+
+function setAvoid(avoid) {
+    count = 0;
+    for(let i = 0; i< rows; i++){
+        for(let j = 0; j< cols; j++){
+            if(board[i][j] != ' ') {
+                count++;
+            }
+        }
+    }
+    if(count < 40){
+        this.avoid = avoid;
+    }
+    console.log("avoid set");
 }
 
 
@@ -492,8 +569,20 @@ function determinePlay(){
     //}
     let test = intelligentPlay();
     if(test == -1){
+        //prevents initial trap
+        if (turn == 1 && board[5][3] == ' '){
+            colCoord = 3;
+            return colCoord;
+        }
+        else if (turn == 1 && board[5][3] != ' '){
+            colCoord = randomPlay();
+            while (colCoord == 3){
+                colCoord = randomPlay();
+            }
+            return colCoord;
+        }
         colCoord = randomPlay();
-        while(document.getElementById(tempRow[colCoord] + "" + colCoord).classList.value != "emptySpace"){
+        while(document.getElementById(tempRow[colCoord] + "" + colCoord).classList.value != "emptySpace" || (avoid == colCoord)){
             colCoord = randomPlay();
         }
         return colCoord;
