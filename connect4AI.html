@@ -12,21 +12,25 @@
 
     <body>
         <div id = "container">
-            <div class = "left"> 
-                <h1 class = "titles"> Welcome to Connect 4 </h1>
+            <div id = "left">
+                <div class = "taskBar">
+                    <a href = "index.html">
+                        <button id="button1"> Return Home </button>
+                    </a> 
+                </div>
+                <h1 class = "titles"> Welcome to Connect 4 - Single Player AI </h1>
                 <div class = "titles"> Player = Red </div>
                 <div class = "titles"> Computer = Yellow </div>
-                <h2 id = "winner"> </h2>
                 <button name = "simple_button" type = button> Easy </button>
                 <button name = "simple_button2" type = button> Medium </button>
                 <button name = "simple_button3" type = button> Hard </button>
-                <div class = "bottomLeft"> 
-                    <div class = "chatBox">
-                    </div>
-                </div>
+                <h2 id = "stateTurn"> Red's Turn </h2>
+                <div id = "showTurn"> </div>
+                <h2 id = "winner"> </h2>
             </div>
 
-            <div class = "right"> 
+            <div id = "right">
+                <div class = "taskBar"></div>
                 <div id = "boardAnimation"> </div>
                 <div id = "boardBackground"> 
                     <div id = "boardBackground2"> 

@@ -1,6 +1,8 @@
 body {
-    font-family:Georgia, 'Times New Roman', Times, serif;
-    position: relative; left: 20px; 
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    position: relative; 
+    padding: 0;
+    margin: 0;
 }
 
 #board {
@@ -19,9 +21,27 @@ body {
     width: 655px;
     background-color: white;
     margin: auto;
-    margin-top: 15px;
     display: flex;
     flex-wrap: wrap;
+}
+
+#showTurn {
+    background-color: red;
+    height: 110px;
+    width: 110px;
+    margin: auto;
+
+    border: 4px solid black;
+    border-radius: 100%;
+}
+
+#stateTurn {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-top: 5vh;
+    margin-bottom: 1vh;
+    height:5vh;
+    width:auto;
+    text-align: center;
 }
 
 .emptySpace {
@@ -40,6 +60,7 @@ body {
     height: 75px;
     width: 75px;
     margin:5px;
+    opacity: 0;
 
     border: 4px solid white;
     border-radius: 80%;

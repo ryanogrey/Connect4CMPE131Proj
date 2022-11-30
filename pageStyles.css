@@ -4,28 +4,69 @@
     width: auto;
     font-style: italic;
     text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     
 }
 
 #winner {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     padding: 0;
     height:5vh;
     width:auto;
     text-align: center;
+
 }
 
 #container {
-    min-height: 94vh;
+    min-height: 100vh;
     display: flex;
+    padding: 0;
+    margin: 0;
 }
 
-.left{
-    width:50vw;
-    background-color: gray;
+.taskBar{
+    width: 50vw;
+    height: 5vh;
+    background-color: black;
 }
-.right{
+
+#button1{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 1.05vh 2.5vw;
+    font-size: 16px;
+    margin-right: 3vw;
+    margin-left: 0.5vw;
+    border-radius: 17%;
+    border: 0.2vw solid black;
+
+    text-align: center;
+    display: inline-block;
+    color: black;
+    
+}
+
+#button2{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 1.05vh 2.5vw;
+    font-size: 16px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 17%;
+    border: 0.2vw solid black;
+
+    text-align: center;
+    display: block;
+    color: black;
+    animation: flicker 4s;
+}
+
+#left{
+    width:50vw;
+    background: linear-gradient( rgb(215, 88, 88), rgb(227, 227, 122))
+}
+#right{
     width:70vw;
-    background-color: white;
+    background-color: white; 
 }
 .bottomLeft{
     width:55vw;

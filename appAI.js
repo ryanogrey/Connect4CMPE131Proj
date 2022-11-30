@@ -25,6 +25,10 @@ window.onload = function(){
     setDifficulty(80);
 }
 
+function refreshBoard(){
+    window.location.reload();
+}
+
 function setDifficulty(difficulty){
     this.difficulty = difficulty;
 }
@@ -80,7 +84,7 @@ function updateBoard(){
                 space.removeEventListener("click",placeCircle);
             }
         }
-        setTimeout(placeCircle, 500);
+        setTimeout(placeCircle, 800);
     }
     else {
         for(let i = 0; i< rows; i++){
@@ -97,6 +101,9 @@ function placeCircle(){
         return;
     }
 
+    let showTurn = document.getElementById("showTurn");
+    let stateTurn = document.getElementById("stateTurn");
+
     if (activePlayer == playerTwo) {
         colCoord = determinePlay();
         rowCoord = tempRow[colCoord];
@@ -104,6 +111,10 @@ function placeCircle(){
             return;
         }
         board[rowCoord][colCoord] = activePlayer;
+
+        showTurn.style.backgroundColor = "Red";
+        stateTurn.innerText = "Red's Turn";
+
         document.getElementById(rowCoord + "" + colCoord).classList.replace("emptySpace" , "yellowCircle");
     }
     else if (activePlayer == playerOne){
@@ -114,9 +125,14 @@ function placeCircle(){
             return;
         }
         board[rowCoord][colCoord] = activePlayer;
+
+        showTurn.style.backgroundColor = "Yellow";
+        stateTurn.innerText = "Yellow's Turn";
+
         document.getElementById(rowCoord + "" + colCoord).classList.replace("emptySpace" , "redCircle");
         //changes pre-mouseover hover to new player color
         document.getElementById(colCoord).classList.replace("hoverRed" , "emptySpaceH");
+
     }
 
     //Once a piece is placed, there is one less available spot 
@@ -225,20 +241,35 @@ function checkWinner(){
 function setWinner(i,j,arr){
     let winner = document.getElementById("winner");
 
+    //Given a winner, Adds button to start new game (effectively refreshing page)
+    let restartButton = document.createElement("button");
+    restartButton.id = "button2";
+    restartButton.addEventListener("click", refreshBoard);
+    document.getElementById("left").append(restartButton);
+    restartButton.innerText = "Click to Play Again!";
+
+    let stateTurn = document.getElementById("stateTurn");
+    stateTurn.innerText = "Game Over!";
+
+    let showTurn = document.getElementById("showTurn");
+
     //if draw
     if(i == -100) {
         winner.innerText = "There was a Draw!";
+        showTurn.style.backgroundColor = "gray";
         setRemainingPieces(arr);
     }
     //if red wins
     else if(board[i][j] == playerOne) {
         winner.innerText = "Red is the Winner!";
+        showTurn.style.backgroundColor = "Red";
         winner.style.color = "red";
         setRemainingPieces(arr);
     } 
     //if yellow wins
     else {
         winner.innerText = "Yellow is the Winner!";
+        showTurn.style.backgroundColor = "Yellow";
         winner.style.color = "yellow";
         setRemainingPieces(arr);
     }

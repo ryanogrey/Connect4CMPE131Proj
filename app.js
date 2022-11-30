@@ -16,6 +16,10 @@ window.onload = function(){
     setBoard();
 }
 
+function refreshBoard(){
+    window.location.reload();
+}
+
 //Sets the initial gamestate of the board (blank board with 42 white circles)
 //appends each white space to the board (overlapping)
 function setBoard() {
@@ -79,15 +83,24 @@ function placeCircle(){
 
     //sets the board place to either red or yellow (playerOne or playerTwo)
     board[rowCoord][colCoord] = activePlayer;
+    let showTurn = document.getElementById("showTurn");
+    let stateTurn = document.getElementById("stateTurn");
 
     if (activePlayer == "Red"){
-        //document.getElementById(rowCoord + "" + colCoord).classList.add("redCircle");
+        //changes the acive player indicator to color according
+        showTurn.style.backgroundColor = "Yellow";
+        stateTurn.innerText = "Yellow's Turn";
+
         document.getElementById(rowCoord + "" + colCoord).classList.replace("emptySpace" , "redCircle");
         activePlayer = playerTwo;
         //changes pre-mouseover hover to new player color
         document.getElementById(colCoord).classList.replace("hoverRed" , "hoverYellow");
     }
     else {
+        //changes the acive player indicator to color according
+        showTurn.style.backgroundColor = "Red";
+        stateTurn.innerText = "Red's Turn";
+        
         document.getElementById(rowCoord + "" + colCoord).classList.replace("emptySpace" , "yellowCircle");
         activePlayer = playerOne;
         //changes pre-mouseover hover to new player color
@@ -180,21 +193,36 @@ function checkWinner(){
 function setWinner(i,j,arr){
     let winner = document.getElementById("winner");
 
+    //Given a winner, Adds button to start new game (effectively refreshing page)
+    let restartButton = document.createElement("button");
+    restartButton.id = "button2";
+    restartButton.addEventListener("click", refreshBoard);
+    document.getElementById("left").append(restartButton);
+    restartButton.innerText = "Click to Play Again!";
+
+    let stateTurn = document.getElementById("stateTurn");
+    stateTurn.innerText = "Game Over!";
+
+    let showTurn = document.getElementById("showTurn"); 
+
     //if draw
     if(i == -100) {
         winner.innerText = "There was a Draw!";
+        showTurn.style.backgroundColor = "gray";
         setRemainingPieces(arr);
     }
     //if red wins
     else if(board[i][j] == playerOne) {
         winner.innerText = "Red is the Winner!";
         winner.style.color = "red";
+        showTurn.style.backgroundColor = "red";
         setRemainingPieces(arr);
     } 
     //if yellow wins
     else {
         winner.innerText = "Yellow is the Winner!";
         winner.style.color = "yellow";
+        showTurn.style.backgroundColor = "yellow";
         setRemainingPieces(arr);
     }
     gameOver = true;
