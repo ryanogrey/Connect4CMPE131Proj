@@ -341,52 +341,148 @@ function randomPlay(){
 }
 
 function intelligentPlay(){
+
+    let temp = -1;
+
     //Vertical
     for(let i = rows-1; i >= 3; i--){
         for(let j = 0; j < cols; j++){
-            if((board[i][j] == playerOne) && (board[i-1][j] == playerOne) && (board[i-2][j] == playerOne) && (board[i-3][j] == ' ')){
-                //returns empty spot to complete
-                return j;
+            if(board[i][j] != ' '){
+                let color = board[i][j];
+                if((board[i][j] == color) && (board[i-1][j] == color) && (board[i-2][j] == color) && (board[i-3][j] == ' ')){
+                    console.log("vertical noticed" + color);
+                    if (color == "Yellow"){
+                        return j;
+                    }
+                    else{
+                        temp = j;
+                    }
+                }
             }
         }
     }
 
-    //Horizontal
-    for(let i = rows-1; i >= 0; i--){
-        for(let j = 0; j < cols-3; j++){
-            if((board[i][j] == playerOne) && (board[i][j+1] == playerOne) && (board[i][j+2] == playerOne)){
-                if(board[i][j+3] == ' '){
-                    return j+3;
+    for(let i = 0; i< rows; i++){
+        for (let j = 0; j< cols-3; j++){
+            if(board[i][j] != ' '){
+                let color1 = board[i][j];
+                let color2 = board[i][j+1];
+                let color3 = board[i][j+2];
+                let color4 = board[i][j+3];
+
+                if((color1 == color2) && (color2 == color3) && (color4 == ' ')){
+                    if (i - 1 == 4){
+                        console.log("Horizontal lowest level noticed");
+                        if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                            return j+3;
+                        }
+                        else{
+                            temp = j+3;
+                        }
+                    }
                 }
-                //edge case of if the empty spot is to the left
-                else if(((j-1) != -1) && board[i-1][j+3] == ' '){
-                    return j-1;
+                else if((color1 == color2) && (color2 == color4) && (color3 == ' ')){
+                    if (i - 1 == 4){
+                        console.log("Horizontal lowest level noticed");
+                        if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                            return j+2;
+                        }
+                        else{
+                            temp = j+2;
+                        }
+                    }
                 }
-                //returns empty spot to complete
+                if((color1 == color3) && (color3 == color4) && (color2 == ' ')){
+                    if (i - 1 == 4){
+                        console.log("Horizontal lowest level noticed");
+                        if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                            return j+1;
+                        }
+                        else{
+                            temp = j+1;
+                        }
+                    }
+                }
+                else if((color2 == color3) && (color3 == color4) && (color1 == ' ')){
+                    if (i - 1 == 4){
+                        console.log("Horizontal lowest level noticed");
+                        if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                            return j;
+                        }
+                        else{
+                            temp = j;
+                        }
+                    }
+                }
             }
         }
     }
 
-    //Diagonal 1
-    /*for(let i = rows-1; i >= 3; i--){
-        for(let j = 0; j < cols-3; j++){
-            //console.log(i + "" + i+1 + "" + i+2);
-            if((board[i][j] == playerOne) && (board[i-1][j+1] == playerOne) && (board[i-2][j+2] == playerOne)){
-                if(board[i-3][j+3] == ' '){
+    for(let i = 0; i< rows -1; i++){
+        for (let j = 0; j< cols-3; j++){
+            if(board[i][j] != ' '){
+                let color1 = board[i][j];
+                let color2 = board[i][j+1];
+                let color3 = board[i][j+2];
+                let color4 = board[i][j+3];
+
+                if ((color1 == color2) && (color2 == color3) && (color4 == ' ') && (board[i+1][j+3] != ' ')){
+                    console.log("Horizontal else noticed");
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        return j+3;
+                    }
+                    else{
+                        temp = j+3;
+                    }
+                }
+                else if ((color1 == color2) && (color2 == color4) && (color3 == ' ') && (board[i+1][j+2] != ' ')){
+                    console.log("Horizontal else noticed");
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        return j+2;
+                    }
+                    else{
+                        temp = j+2;
+                    }
+                }
+                else if ((color1 == color3) && (color3 == color4) && (color2 == ' ') && (board[i+1][j+1] != ' ')){
+                    console.log("Horizontal else noticed");
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        return j+1;
+                    }
+                    else{
+                        temp = j+1;
+                    }
+                }
+                else if ((color2 == color3) && (color3 == color4) && (color1 == ' ') && (board[i+1][j] != ' ')){
+                    console.log("Horizontal else noticed");
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        return j;
+                    }
+                    else{
+                        temp = j;
+                    }
+                }
+            }
+        }
+    }
+    /*//checking diagonal (lower left to top right)
+    for(let i = rows - 1; i>= 3; i--){
+        for (let j = 0; j< cols; j++){
+            if((board[i][j] == playerOne) && (board[i-1][j+1] == playerOne) && (board[i-2][j+2] == playerOne) && (board[i-3][j+3] == ' ')){
+                if (board[i-2][j+3] != ' '){
+                    console.log("Upper corner diagonal");
                     return j+3;
                 }
-                //edge case of if the empty spot is to the left
-                else if(((i+1) != -1) && ((j-1) != -1) && board[i+1][j-1] == ' '){
-                    return j-1;
-                }
-                //returns empty spot to complete
+            }
+            /*else if ((board[i][j] == playerOne) && (board[i-1][j+1] == playerOne) && (board[i-2][j+2] == playerOne) && ((i+1) != 6) && ((j-1) != -1) && (board[i+1][j-1] == ' ')){
+                if (i )
+                console.log("lower corner diagonal");
+                return j-1;
             }
         }
     }*/
-
     
-    return -1;
-
+    return temp;
 }
 
 
@@ -395,7 +491,6 @@ function determinePlay(){
 
     //}
     let test = intelligentPlay();
-    console.log("intel");
     if(test == -1){
         colCoord = randomPlay();
         while(document.getElementById(tempRow[colCoord] + "" + colCoord).classList.value != "emptySpace"){
