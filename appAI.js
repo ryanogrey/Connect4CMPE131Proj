@@ -16,6 +16,7 @@ var tempRow;
 var arrWinning;
 
 var difficulty;
+var difficultySet = false;
 
 var turn = 0;
 
@@ -26,20 +27,66 @@ var avoid = null;
 //Initial startup (calls on refresh to page)
 window.onload = function(){
     setBoard();
-    setDifficulty(80);
 }
 
 function refreshBoard(){
     window.location.reload();
 }
 
-function setDifficulty(difficulty){
-    this.difficulty = difficulty;
+function setDifficultyEasy(){
+    if (difficultySet == true){
+        console.log("already set");
+    }
+    else{
+        console.log("setting difficulty to Easy");
+        difficulty = "Easy";
+        difficultySet = true;
+        document.getElementById("dbutton1").removeEventListener("click", setDifficultyEasy);
+        document.getElementById("dbutton2").style.opacity = 0;
+        document.getElementById("dbutton3").style.opacity = 0;
+    }
+}
+
+function setDifficultyMedium(){
+    if (difficultySet == true){
+        console.log("already set");
+    }
+    else{
+        console.log("setting difficulty to Medium");
+        difficulty = "Medium";
+        difficultySet = true;
+        document.getElementById("dbutton2").removeEventListener("click", setDifficultyMedium);
+        document.getElementById("dbutton1").style.opacity = 0;
+        document.getElementById("dbutton3").style.opacity = 0;
+    }
+}
+
+function setDifficultyHard(){
+    if (difficultySet == true){
+        console.log("already set");
+    }
+    else{
+        console.log("setting difficulty to Hard");
+        difficulty = "Hard";
+        difficultySet = true;
+        document.getElementById("dbutton3").removeEventListener("click", setDifficultyHard);
+        document.getElementById("dbutton1").style.opacity = 0;
+        document.getElementById("dbutton2").style.opacity = 0;
+    }
 }
 
 //Sets the initial gamestate of the board (blank board with 42 white circles)
 //appends each white space to the board (overlapping)
 function setBoard() {
+
+    let easyButton = document.getElementById("dbutton1");
+    easyButton.addEventListener("click", setDifficultyEasy);
+
+    let easyButton1 = document.getElementById("dbutton2");
+    easyButton1.addEventListener("click", setDifficultyMedium);
+
+    let easyButton2 = document.getElementById("dbutton3");
+    easyButton2.addEventListener("click", setDifficultyHard);
 
     //sets hover pieces
     for(let i = 0; i < cols; i++){ 
@@ -339,10 +386,7 @@ function pieceUnHover(){
 
 function randomPlay(){
     let colCoord = Math.floor(Math.random() * 7);
-    //let i = 5 - tempRow[colCoord];
-    //let adj1;
-    //let adj2;
-    //let adj3;
+    
     while(tempRow[colCoord] < 0){
         colCoord = Math.floor(Math.random() * 7);
     }
@@ -515,7 +559,7 @@ function intelligentPlay(){
             if(board[i][j] != ' '){
                 let color = board[i][j];
                 if((board[i][j] == color) && (board[i-1][j] == color) && (board[i-2][j] == color) && (board[i-3][j] == ' ')){
-                    console.log("vertical noticed" + color);
+                    console.log("vertical noticed");
                     if (color == "Yellow"){
                         return j;
                     }
@@ -527,22 +571,188 @@ function intelligentPlay(){
         }
     }
 
-    /*//checking diagonal (lower left to top right)
-    for(let i = rows - 1; i>= 3; i--){
-        for (let j = 0; j< cols; j++){
-            if((board[i][j] == playerOne) && (board[i-1][j+1] == playerOne) && (board[i-2][j+2] == playerOne) && (board[i-3][j+3] == ' ')){
-                if (board[i-2][j+3] != ' '){
-                    console.log("Upper corner diagonal");
-                    return j+3;
+    //checking diagonal (lower left to top right)
+    //checking lowest level diagonal
+    //if on lowest level, an empty space guarentees there is nothing below it, so don't have to check the piece to the left
+    for(let i = rows - 1; i >= 3; i--){
+        for (let j = 0; j< cols - 3; j++){
+            let color1 = board[i][j];
+            let color2 = board[i-1][j+1];
+            let color3 = board[i-2][j+2];
+            let color4 = board[i-3][j+3];
+
+            if((color1 == color2) && (color2 == color3) && (color4 == ' ') && board[i-2][j+3] != ' '){
+                if (i == 5){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal1 noticed");
+                        return j+3;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal1 noticed");
+                        temp = j+3;
+                    }
                 }
             }
-            /*else if ((board[i][j] == playerOne) && (board[i-1][j+1] == playerOne) && (board[i-2][j+2] == playerOne) && ((i+1) != 6) && ((j-1) != -1) && (board[i+1][j-1] == ' ')){
-                if (i )
-                console.log("lower corner diagonal");
-                return j-1;
+            else if((color1 == color2) && (color2 == color4) && (color3 == ' ') && board[i-1][j+2] != ' '){
+                if (i == 5){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal1 noticed");
+                        return j+2;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal1 noticed");
+                        temp = j+2;
+                    }
+                }
+            }
+            if((color1 == color3) && (color3 == color4) && (color2 == ' ') && board[i][j+1] != ' '){
+                if (i == 5){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal1 noticed");
+                        return j+1;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal1 noticed");
+                        temp = j+1;
+                    }
+                }
+            }
+            else if((color2 == color3) && (color3 == color4) && (color1 == ' ')){
+                if (i == 5){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal1 noticed");
+                        return j;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal1 noticed");
+                        temp = j;
+                    }
+                }
             }
         }
-    }*/
+    }
+
+    //checking diagonal (lower left to top right)
+    //checking any level diagonal
+    for(let i = rows - 2; i >= 3; i--){
+        for (let j = 0; j< cols - 3; j++){
+            let color1 = board[i][j];
+            let color2 = board[i-1][j+1];
+            let color3 = board[i-2][j+2];
+            let color4 = board[i-3][j+3];
+
+            if((color1 == color2) && (color2 == color3) && (color4 == ' ') && board[i-2][j+3] != ' '){
+                if (i < 5){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal1 noticed");
+                        return j+3;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal1 noticed");
+                        temp = j+3;
+                    }
+                }
+            }
+            else if((color1 == color2) && (color2 == color4) && (color3 == ' ') && board[i-1][j+2] != ' '){
+                if (i < 5){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal1 noticed");
+                        return j+2;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal1 noticed");
+                        temp = j+2;
+                    }
+                }
+            }
+            if((color1 == color3) && (color3 == color4) && (color2 == ' ') && board[i][j+1] != ' '){
+                if (i < 5){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal1 noticed");
+                        return j+1;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal1 noticed");
+                        temp = j+1;
+                    }
+                }
+            }
+            else if((color2 == color3) && (color3 == color4) && (color1 == ' ') && board[i+1][j] != ' '){
+                if (i < 5){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal1 noticed");
+                        return j;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal1 noticed");
+                        temp = j;
+                    }
+                }
+            }
+        }
+    }
+
+    //checking diagonal (upper left to lower right)
+    //checking lowest level diagonal
+    //if on lowest level, an empty space guarentees there is nothing below it, so don't have to check the piece to the left
+    
+    for(let i = 0; i < 3; i++){
+        for (let j = 0; j < cols - 3; j++){
+            let color1 = board[i][j];
+            let color2 = board[i+1][j+1];
+            let color3 = board[i+2][j+2];
+            let color4 = board[i+3][j+3];
+
+            if((color1 == color2) && (color2 == color3) && (color4 == ' ') && board[i+2][j+3] != ' '){
+                if (i != -1){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal2 noticed");
+                        return j+3;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal2 noticed");
+                        temp = j+3;
+                    }
+                }
+            }
+            else if((color1 == color2) && (color2 == color4) && (color3 == ' ') && board[i+1][j+2] != ' '){
+                if (i != -1){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal2 noticed");
+                        return j+2;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal2 noticed");
+                        temp = j+2;
+                    }
+                }
+            }
+            if((color1 == color3) && (color3 == color4) && (color2 == ' ') && board[i][j+1] != ' '){
+                if (i != -1){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal2 noticed");
+                        return j+1;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal2 noticed");
+                        temp = j+1;
+                    }
+                }
+            }
+            else if((color2 == color3) && (color3 == color4) && (color1 == ' ')){
+                if (i != -1){
+                    if (color1 == "Yellow" || color2 == "Yellow" || color3 == "Yellow" || color4 == "Yellow"){
+                        console.log("Diagonal2 noticed");
+                        return j;
+                    }
+                    else if (color1 == "Red" || color2 == "Red" || color3 == "Red" || color4 == "Red"){
+                        console.log("Diagonal2 noticed");
+                        temp = j;
+                    }
+                }
+            }
+        }
+    }
 
     return temp;
 }
@@ -564,30 +774,82 @@ function setAvoid(avoid) {
 
 
 function determinePlay(){
-    //if(difficulty < 50){
-
-    //}
-    let test = intelligentPlay();
-    if(test == -1){
-        //prevents initial trap
-        if (turn == 1 && board[5][3] == ' '){
-            colCoord = 3;
-            return colCoord;
-        }
-        else if (turn == 1 && board[5][3] != ' '){
-            colCoord = randomPlay();
-            while (colCoord == 3){
-                colCoord = randomPlay();
-            }
-            return colCoord;
-        }
+    //prevents initial trap
+    if (turn == 1 && board[5][3] == ' '){
+        colCoord = 3;
+        return colCoord;
+    }
+    else if (turn == 1 && board[5][3] != ' '){
         colCoord = randomPlay();
-        while(document.getElementById(tempRow[colCoord] + "" + colCoord).classList.value != "emptySpace" || (avoid == colCoord)){
+        while (colCoord == 3){
             colCoord = randomPlay();
         }
         return colCoord;
     }
+
+    if(difficulty == "Easy"){
+        let chance = Math.floor(Math.random() * 100);
+        if (chance < 70){
+            let test = intelligentPlay();
+            if(test == -1){
+                //random play
+                colCoord = randomPlay();
+                while(document.getElementById(tempRow[colCoord] + "" + colCoord).classList.value != "emptySpace" || (avoid == colCoord)){
+                    colCoord = randomPlay();
+                }
+                return colCoord;
+            }
+            else{
+                return test;
+            }
+        }
+        else{
+           //random play
+           colCoord = randomPlay();
+           while(document.getElementById(tempRow[colCoord] + "" + colCoord).classList.value != "emptySpace" || (avoid == colCoord)){
+               colCoord = randomPlay();
+           }
+           return colCoord; 
+        }
+    }
+    else if(difficulty = "Medium"){
+        let chance = Math.floor(Math.random() * 100);
+        if (chance < 90){
+            let test = intelligentPlay();
+            if(test == -1){
+                //random play
+                colCoord = randomPlay();
+                while(document.getElementById(tempRow[colCoord] + "" + colCoord).classList.value != "emptySpace" || (avoid == colCoord)){
+                    colCoord = randomPlay();
+                }
+                return colCoord;
+            }
+            else{
+                return test;
+            }
+        }
+        else{
+           //random play
+           colCoord = randomPlay();
+           while(document.getElementById(tempRow[colCoord] + "" + colCoord).classList.value != "emptySpace" || (avoid == colCoord)){
+               colCoord = randomPlay();
+           }
+           return colCoord; 
+        }
+    }
+    //hard or no choice selected
     else{
-        return test;
-    }  
+        let test = intelligentPlay();
+        if(test == -1){
+            //random play
+            colCoord = randomPlay();
+            while(document.getElementById(tempRow[colCoord] + "" + colCoord).classList.value != "emptySpace" || (avoid == colCoord)){
+                colCoord = randomPlay();
+            }
+            return colCoord;
+        }
+        else{
+            return test;
+        }
+    } 
 }
