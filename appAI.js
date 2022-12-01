@@ -135,7 +135,7 @@ function updateBoard(){
                 space.removeEventListener("click",placeCircle);
             }
         }
-        setTimeout(placeCircle, 800);
+        setTimeout(placeCircle, 1200);
     }
     else {
         for(let i = 0; i< rows; i++){
@@ -150,6 +150,28 @@ function updateBoard(){
 function placeCircle(){
     if (gameOver == true){
         return;
+    }
+
+    document.getElementById("dbutton1").removeEventListener("click", setDifficultyEasy);
+    document.getElementById("dbutton2").removeEventListener("click", setDifficultyMedium);
+    document.getElementById("dbutton3").removeEventListener("click", setDifficultyHard);
+
+    if(difficulty == "Easy"){
+        document.getElementById("dbutton2").style.opacity = 0;
+        document.getElementById("dbutton3").style.opacity = 0;
+    }
+    else if(difficulty == "Medium"){
+        document.getElementById("dbutton1").style.opacity = 0;
+        document.getElementById("dbutton3").style.opacity = 0;
+    }
+    else if(difficulty == "Hard"){
+        document.getElementById("dbutton1").style.opacity = 0;
+        document.getElementById("dbutton2").style.opacity = 0;
+    }
+    else{
+        document.getElementById("dbutton1").style.opacity = 0;
+        document.getElementById("dbutton2").style.opacity = 0;
+        document.getElementById("dbutton3").style.opacity = 0;
     }
 
     let showTurn = document.getElementById("showTurn");

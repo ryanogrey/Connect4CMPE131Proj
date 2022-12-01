@@ -5,15 +5,27 @@
         <meta charset="UTF-8">
         <meta name ="viewport" content="width=device-width, initial-scale=1.0">
         
-        <link rel="stylesheet" href = "gameStyles.css">
+        <link rel="stylesheet" href = "homeStyles.css">
     </head>
 
     <body>
-        <h1>Choose Your Game!</h1>
-        <img src = "connectimg.png" width = 200 height = 200></img>
-        <h2> </h2>
-        <a href = "connect4.html">Connect 4</a>
-        <h2> </h2>
-        <a href = "connect4AI.html">Connect 4 AI</a>
+        <h1 class = "titles">Welcome to Connect4!</h1>
+        <h1 class = "titles2">Choose a Game Mode</h1>
+        <div class = "container"> 
+            <div class = "left">
+                <h1 class = "titles2">Have a friend with you? Choose Offline Multiplayer!</h1>
+                <h1 class = "titles2">Click Below!</h1>
+                <a href = "connect4.html" >
+                    <img class = "image" src = "homeimg.png"  ></img>
+                </a>
+            </div>
+            <div class = "right">
+                <h1 class = "titles2">No friends? Try to beat the computer!</h1>
+                <h1 class = "titles2">Click Below!</h1>
+                <a href = "connect4AI.html">
+                    <img class = "image" src = "homeimg.png" ></img>
+                </a>
+            </div>
+        </div>
     </body>
 </html>
